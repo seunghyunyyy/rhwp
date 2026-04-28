@@ -1,0 +1,29 @@
+name: Trigger hwp.ngelsh.com Deploy
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'mydocs/**'
+      - 'docs/**'
+      - 'samples/**'
+      - 'assets/**'
+      - '*.md'
+      - 'LICENSE'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/FUNDING.yml'
+      - '.github/CODE_OF_CONDUCT.md'
+      - '.github/SECURITY.md'
+      - '.github/pull_request_template.md'
+      - '.github/dependabot.yml'
+      - 'rhwp-logo.*'
+  workflow_dispatch:
+
+jobs:
+  trigger:
+    name: Trigger Cloudflare Pages Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Cloudflare Pages Deploy Hook
+        run: |
+          curl -X POST "${{ secrets.CF_PAGES_DEPLOY_HOOK }}"
